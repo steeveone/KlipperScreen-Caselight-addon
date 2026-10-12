@@ -77,3 +77,5 @@ From your screen, enable addons:
 Settings->KlipperScreen->Enable Add-ons
 ```
 Now issue a firmware restart and a KlipperScreen restart and enjoy!
+
+You can find logs about this addon into printer_data/logs/KlipperScreen.log
