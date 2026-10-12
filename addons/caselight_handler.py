@@ -1,3 +1,4 @@
+import logging
 # Configuration
 MACRO_WAKE = "CASELIGHT_ON"
 MACRO_SLEEP = "CASELIGHT_OFF"
