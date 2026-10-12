@@ -72,4 +72,8 @@ gcode:
 	{% endif %}
 ```
 
+From your screen, enable addons:
+```
+Settings->KlipperScreen->Enable Add-ons
+```
 Now issue a firmware restart and a KlipperScreen restart and enjoy!
