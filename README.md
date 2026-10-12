@@ -25,12 +25,15 @@ variable_saved_g: []
 variable_saved_b: []
 variable_saved_w: []
 variable_saved_caselight_brightness: 0.0
+variable_state: True
 gcode:
 
 [gcode_macro CASELIGHT_ON]
 gcode:
-	{% set current_brightness = printer["output_pin caselight"].value | float %}
-	{% if current_brightness < 0.1 %}
+	#{% set current_brightness = printer["output_pin caselight"].value | float %}
+	#{% if current_brightness < 0.1 %}
+	{% set current_state = printer["gcode_macro CASELIGHT_VARIABLES"].state %}
+	{% if current_state == False %}
 		{% set led_name = "sb_leds" %}
 		
 		{% set r = printer["gcode_macro CASELIGHT_VARIABLES"].saved_r %}
@@ -45,13 +48,17 @@ gcode:
 		{% endfor %}
 		
 		SET_PIN PIN=caselight VALUE={target_brightness}
+		SET_GCODE_VARIABLE MACRO=CASELIGHT_VARIABLES VARIABLE=state VALUE=True
 	{% endif %}
 
 [gcode_macro CASELIGHT_OFF]
 gcode:
 	{% if printer.toolhead.homed_axes == "" %}
-		{% set current_brightness = printer["output_pin caselight"].value | float %}
-		{% if current_brightness > 0 %}
+		#{% set current_brightness = printer["output_pin caselight"].value | float %}
+		{% set current_state = printer["gcode_macro CASELIGHT_VARIABLES"].state  %}
+		#{% if current_brightness > 0 %}
+		{% if current_state == True %}
+			{% set current_brightness = printer["output_pin caselight"].value | float %}
 			{% set led_name = "sb_leds" %}
 			{% set current_chain = printer["neopixel " ~ led_name].color_data %}
 			
@@ -68,6 +75,7 @@ gcode:
 			SET_GCODE_VARIABLE MACRO=CASELIGHT_VARIABLES VARIABLE=saved_caselight_brightness VALUE={current_brightness}
 			STATUS_OFF
 			SET_PIN PIN=caselight VALUE=0.0
+			SET_GCODE_VARIABLE MACRO=CASELIGHT_VARIABLES VARIABLE=state VALUE=False
 		{% endif %}
 	{% endif %}
 ```
